@@ -6,7 +6,7 @@ para poder recibir el apoyo necesario
 Scenario: El artista se registra
     Dado que el artista no está registrado
     Y se encuentra en el formulario "Registrarse"
-    Cuando el artista completa los campos <Nombres><Apellidos><Edad><Genero><Telefono><Contrasena><Correo electronico>
+    Cuando el artista completa los campos <Nombres> <Apellidos> <Edad> <Genero> <Telefono> <Contrasena> <Correo electronico>
     Y el artista presiona el boton "Registrarme"
     Entonces el sistema registra al artista a la base de datos del sistema
     Y el sistema muestra un <mensaje de exito>
