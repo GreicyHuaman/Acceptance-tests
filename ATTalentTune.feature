@@ -1,262 +1,425 @@
-Feature: US01: Registrar artistas nuevos
-Como artista 
-quiero estar registrado en la app 
-para poder recibir el apoyo necesario
+Feature: Registro de Artista
+  Como artista 
+  quiero estar registrado en la app 
+  para poder recibir el apoyo necesario
 
-Scenario: El artista se registra
-    Dado que el artista no está registrado
-    Y se encuentra en el formulario "Registrarse"
-    Cuando el artista completa los campos <Nombres><Apellidos><Edad><Genero><Telefono><Contrasena><Correo electronico>
-    Y el artista presiona el boton "Registrarme"
-    Entonces el sistema registra al artista a la base de datos del sistema
-    Y el sistema muestra un <mensaje de exito>
-Examples: datos de entrada
-    | Nombres | Apellidos | Edad | Genero | Telefono | Contrasena | Correo electronico |
-    | Jesus  | Ramirez | 20  | Masculino | 923456789 | #$%Hola$% | Jesus123@gmail.com |  
-
-Examples: datos de salida
-    | mensaje de exito| 
-    | La cuenta se ha registrado exitosamente  |
-
-Feature: US02: Editar la informacion del perfil artista
-Como artista 
-quiero poder editar la información de mi perfil en la aplicación 
-para mantenerla actualizada 
-y atractiva para mis seguidores
-
-Scenario: Cambio de contraseña 
-    Dado que el artista ha seleccionado la opción de "Cambiar contraseña" en su perfil
-    Cuando el artista ingresa su <contrasenia actual> y <la nueva contrasenia dos veces> para confirmación
-    Y el artista presiona el botón "Cambiar contraseña"
-    Entonces el sistema actualiza la contraseña del artista en la base de datos
-    El sistema muestra un <mensaje de exito> de "la contraseña se ha cambiado exitosamente"
-
-Examples: datos de entrada
-| contrasenia actual | contrasenia nueva | confirmacion contrasenia |
-| HolaMundo123      | HolaNuevo123     | HolaNuevo123           |
-
-Examples: datos de salida
-| mensaje de exito                         |
-| La contraseña se ha cambiado exitosamente |
-
-Feature: US03: Eliminar perfil del artista
-Como artista 
-quiero tener la opción de eliminar mi perfil en la aplicación
-para borrar la informacion que brinde al registrarme
-
-Scenario: Eliminación de perfil
-    Dado que el artista ha iniciado sesión en la aplicación y desea eliminar su perfil
-    Cuando el artista se encuentre en su perfil
-    Y el artista presiona el botón "Eliminar Perfil" en la configuración
-    Entonces el sistema elimina el perfil del artista de la base de datos
-    Y el sistema muestra un <mensaje de confirmacion> de "el perfil se ha eliminado correctamente"
-
-Examples: datos de salida
-| mensaje de confirmacion              |
-| El perfil se ha eliminado correctamente |
-
-Feature: US25: Recibir notificaciones del contenido de nuevos artistas
-Como manager
-quiero recibir notificaciones sobre el contenido y actividades de nuevos artistas en la plataforma 
-para estar al tanto de posibles talentos que puedan ser de interés para mi empresa o eventos.
-
-Scenario: Configurar preferencias de notificación
-    Dado que el manager ha iniciado sesión en la aplicación 
-    Cuando el manager accede a su perfil o configuración de notificaciones
-    Entonces el sistema permite al manager "configurar sus preferencias de notificación" relacionadas con el contenido y actividades de nuevos artistas, como <genero musical> <ubicacion> <nivel de experiencia> <tipo de contenido>
-    Y el manager presiona el boton de "Guardar preferencias de notificaciones" 
-    Y el sistema muestra un <mensaje de exito> de "Se guardaron las preferencias de notificaciones"
-
-Examples: datos de entrada
-|genero musical | ubicacion | nivel de experiencia | tipos de contenido |
-| rock          | ciudad   | intermedio        | canciones            |
-
-Examples: datos de salida
-| mensaje de exito                               |
-| Se guardaron las preferencias de notificaciones |
-
-Scenario: Notificación de nuevos artistas y contenido relevante
-    Dado que el manager ha configurado sus preferencias de notificación
-    Cuando un nuevo artista se registra en la plataforma y cumple con las preferencias especificadas por el manager, o cuando un artista existente publica nuevo contenido o realiza actividades relevantes
-    Entonces el sistema genera una notificación 
-    Y la muestra al manager en su perfil o en una sección de notificaciones
+  Scenario: Registrar artista
+    Given que estoy en la página de <registro de artista>
+    When ingreso mi <informacion personal> (<Nombres><Apellidos><Edad><Genero><Telefono><Contrasena><Correo electronico>)
+    And el artista presiona el boton "Registrarme"
+    And el sistema muestra un <mensaje de exito>
+    Then debería ver mi <perfil de artista>
     
+    Examples: datos de entrada
+        | Nombres | Apellidos | Edad | Genero | Telefono | Contrasena | Correo electronico |
+        | Jesus  | Ramirez | 20  | Masculino | 923456789 | #$%Hola$% | Jesus123@gmail.com |  
 
-Feature: US26: Visualizar la información de los artistas
-Como manager
-quiero tener la capacidad de visualizar la información detallada de los artistas en la plataforma 
-para evaluar su talento 
-y determinar si son adecuados para mi empresa o eventos
+    Examples: datos de salida
+        | mensaje de exito| 
+        | La cuenta se ha registrado exitosamente  |    
 
-Scenario: Visualización de perfil de artista
-    Dado que el manager ha iniciado sesión en la aplicación
-    Cuando el manager accede a la sección de "búsqueda de artistas" o recibe una notificación sobre un artista
-    Y el manager selecciona un "artista específico de la lista o notificación"
-    Entonces el sistema muestra el perfil completo del artista, que incluye información como nombre, género musical, ubicación, biografía, fotos y videos, muestras de música, experiencia
+  Scenario: Editar información del perfil artista
+    Given que estoy en la página de <perfil de artista>
+    When edito mi <informacion personal>
+    Then debería ver mi perfil de artista actualizado
+    And el sistema muestra un <mensaje de exito>
 
-Feature: US27: Filtrar por categoría y género
-Como manager
-quiero poder filtrar la lista de artistas por categoría y género musical 
-para encontrar talentos que se adapten a las necesidades específicas de mis eventos o empresa
+    Examples: datos de salida
+        | mensaje de exito|
+        | La informacion se ha actualizado exitosamente  |  
 
-Scenario: Filtrar por categoría
-    Dado que el manager ha iniciado sesión en la aplicación
-    Cuando el manager accede a la sección de búsqueda de artistas
-    Y el manager selecciona una <categoria artistica>, como "Solista" o "Banda" de las opciones disponibles en el filtro
-    Entonces el sistema muestra una lista de artistas que se ajustan a la categoría seleccionada
+  Scenario: Eliminar perfil del artista
+    Given que estoy en la página de <perfil de artista>
+    When elimino mi <perfil de artista>
+    And el sistema muestra un <mensaje de exito>
+    Then debería ver la <pagina de inicio>
 
-Examples: datos de entrada
-|categoria artistica|
-| Solista       |
+    Examples: datos de salida
+        | mensaje de exito|
+        | Se ha eliminado su perfil correctamente  |
 
-Scenario: Filtrar por género musical
-    Dado que el manager está en la sección de búsqueda de artistas
-    Cuando el manager selecciona un <genero musical> específico, como "Rock," "Pop" o "Electrónica," de las opciones disponibles en el filtro
-    Entonces el sistema muestra una lista de artistas que se identifican con el género musical seleccionado
+Feature: Carga de música
+  Como artista 
+  quiero poder cargar mi música a la plataforma 
+  para compartirla con otros y promocionarla
 
-Examples: datos de entrada
-| género musical |
-| Rock           |
+  Scenario: Filtrar la visibilidad de mis canciones
+    Given que estoy en la <pagina de carga de musica>
+    When selecciono la visibilidad de mis canciones
+    And el sistema muestra un <mensaje de exito>
+    Then debería ver mis canciones cargadas
 
-Feature: US28: Enviar reuniones para una audición
-Como manager
-Quiero enviar una invitación a un artista para una audición
-Para coordinar una evaluación o audición presencial o virtual
+    Examples: datos de salida
+        | mensaje de exito|
+        | Canción subida exitosamente  |
 
-Scenario: Enviar solicitud de reunión o audición
-   Dado que el manager ha iniciado sesión en la aplicación.
-    Cuando el manager está visualizando el perfil de un artista que le interesa.
-    Y el manager selecciona la opción "Enviar solicitud de audición" en el perfil del artista
-    Entonces el sistema permite al manager "configurar los detalles de la solicitud", como la <fecha> <hora> <ubicacion> <plataforma virtual>
-    Y el manager "envía la solicitud al artista" 
-    Y le aparece un <mensaje de confirmacion> de "Se envio correctamente la solicitud detallada"
+  Scenario: Cargar música
+    Given que estoy en la <pagina de carga de musica>
+    And el usuario presiona el <boton de adjuntar musica>
+    When cargo mi música
+    And el sistema muestra un <mensaje de exito>
+    Then debería ver mi música cargada
 
-Examples: datos de entrada
-| fecha |   hora    |    ubicacion   | plataforma virtual |   
-|14/05/2024| 16:00 horas|     Casa      |   zoom    |
+    Examples: datos de entrada
+        | boton de adjuntar musica | 
+        | Adjuntar archivo         |
 
-Examples: datos de salida
-| mensaje de confirmación                               |
-| Se ha enviado correctamente la solicitud de audición |
+    Examples: datos de salida
+        | mensaje de exito|
+        | Musica subida exitosamente  |
 
-Scenario: Envío erróneo de solicitud de reunión o audición
-    Dado que el manager ha iniciado sesión en la aplicación.
-    Cuando el manager está visualizando el perfil de un artista que le interesa.
-    Y el manager selecciona la opción "Enviar solicitud de audicion" en el perfil del artista
-    Entonces el sistema permite al manager "configurar los detalles de la solicitud", como la <fecha> <hora> <ubicacion> <plataforma virtual>
-    Y el manager presiona el boton de <cancelar> y aparece un mensaje de "Se cancelo la solicitud de audicion"
-    Y se redirecciona a la página principal
+  Scenario: Editar música
+    Given que estoy en la <pagina de edicion de musica>
+    When presiono el boton <editar mi musica>
+    And puedo cambiar el <nombre de la musica><recortar audio>
+    And presiona el boton <guardar cambios>
+    And el sistema muestra un <mensaje de exito>
+    Then debería ver mi <musica actualizada>
 
-Examples: datos de entrada
-| fecha |   hora    |    ubicacion   | plataforma virtual |   
-|14/05/2024| 16:00 horas|     Casa      |   zoom    |
+    Examples: datos de entrada
+    | nombre de la musica | recortar audio | guardar cambios |
+    |  oye mi amor |  2:50 |  los cambios se guardaron |
 
-Examples: datos de salida
-| cancelar                               |
-| Se cancelo la solicitud de audicion |
+    Examples: datos de salida
+    | mensaje de exito|
+    | Musica actualizada exitosamente  |
 
-Feature: US29: Visualizar el número de reproducciones de la canción
-Como artista
-quiero poder visualizar el número de reproducciones de mis canciones en la plataforma 
-para medir su popularidad y evaluar el interés de los oyentes
+  Scenario: Eliminar música
+    Given que estoy en la página de <eliminacion de musica>
+    When elimino mi música
+    And el sistema muestra un <mensaje exitoso>
+    Then debería ver la página de inicio
 
-Scenario: Visualización de reproducciones 
-    Dado que el artista ha iniciado sesión en la aplicación
-    Cuando el artista accede a su perfil o a la sección de gestión de canciones. 
-    Entonces el sistema muestra una lista de las canciones del artista, junto con el número de reproducciones de cada canción.
+    Examples: datos de salida
+    | mensaje exitoso|
+    | Musica eliminada exitosamente  |
 
-Scenario: Visualización de reproducciones comparativo
-    Dado que el artista quiere comparar el rendimiento de varias canciones
-    Cuando el artista selecciona varias canciones y visualiza el número de reproducciones de cada una de ellas en una vista comparativa. 
-    Entonces el sistema muestra los datos de reproducciones de las canciones seleccionadas para su análisis.
+Feature: Búsqueda de artistas
+  Como artista 
+  quiero buscar personas con gustos similares 
+  para crear una banda
 
-Feature: US30: Visualizar la cantidad de seguidores y artistas
-Como usuario registrado en la plataforma
-quiero poder visualizar la cantidad de seguidores 
-y artistas a los que estoy conectado 
-para tener una idea de mi presencia y red en la comunidad musical
+  Scenario: Búsqueda de artistas en común
+    Given que estoy en la <pagina de busqueda de artistas>
+    When busco artistas en común
+    Then debería ver una <lista de artistas en comun>
 
-Scenario: Visualización de seguidores
-    Dado que el usuario ha iniciado sesión en la aplicación
-    Cuando el usuario accede a su Perfil
-    Entonces el sistema muestra la lista de sus seguidores
+  Scenario: Crear grupo de artistas
+    Given que estoy en la <pagina de creacion de grupo de artistas>
+    When creo un <grupo de artistas>
+    And configuros los detalles como <nombre><participantes>
+    And el sistema muestra un <mensaje exitoso>
+    Then debería ver mi grupo de artistas creado
 
-Scenario: Visualizacion de artistas seguidos
-    Dado que el usuario está en su perfil
-    Cuando el usuario accede a la sección de <Artistas Seguidos> o <Mis Favoritos>
-    Entonces el sistema muestra el "número total de artistas a los que el usuario sigue" o "ha marcado como favoritos"
+    Examples: datos de entrada
+    | nombre | participantes |
+    | grupo de rock | 3 |
 
-Examples: datos de salida
-| ArtistasSeguidos | MisFavoritos |
-|   100   |     10      |
+    Examples: datos de salida
+    | mensaje exitoso|
+    | Grupo de artistas creado exitosamente  |
 
-Feature: US31: Recibir alertas cuando las estadísticas bajen
-Como manager
-quiero recibir alertas o notificaciones cuando las estadísticas o el rendimiento de un artista que estoy gestionando disminuyan significativamente
-para tomar medidas adecuadas y mantener un alto nivel de calidad y éxito
+  Scenario: Crear salas virtuales con otros artistas
+    Given que estoy en la <pagina de creacion de salas virtuales>
+    When creo una <sala virtual con otros artistas>
+    And configuros los detalles como <participantes><fecha><hora>
+    And el sistema muestra un <mensaje exitoso>
+    Then debería ver mi <sala virtual creada>
 
-Scenario: Configuración de alertas
-    Dado que el manager ha iniciado sesión en la aplicación.
-    Cuando el manager accede a la "sección de gestión de artistas o estadísticas"
-    Entonces el sistema permite al manager configurar las alertas específicas que desea recibir, como una disminución del número de reproducciones, una disminución en la cantidad de seguidores, etc.
+    Examples: datos de entrada
+    | participantes | fecha | hora |
+    | 3 | 2022-01-01 | 11:00 |
 
-Feature: US32: Colores llamativos
-Como seguidor 
-quiero tener una interfaz visual
-para tener mayor comodidad en la aplicación
+    Examples: datos de salida
+    | mensaje exitoso|
+    | Sala virtual creada exitosamente  |
 
-Scenario: Tener colores llamativos
-    Dado que soy un seguidor y utilizo la aplicación
-    Cuando abro la aplicación
-    Entonces los colores utilizados en la interfaz deben ser vibrantes y llamativos
-    Y los colores deben ser agradables a la vista, evitando combinaciones que dificulten la legibilidad o causen fatiga visual.
+Feature: Gestión de contenido multimedia
+  Como artista 
+  quiero poder gestionar mi contenido multimedia 
+  para elegir cuales encabezan mi repertorio
 
-Feature: US33: Interfaz dinámica y amigable
-Como seguidor 
-quiero tener una interfaz dinámica y amigable 
-para que se haga más ameno e intuitivo el uso de esta página
+  Scenario: Destacar una canción
+    Given que estoy en la <pagina de destacado de canciones>
+    When <destaco una cancion>
+    And el sistema muestra un <mensaje exitoso>
+    Then debería ver mi <cancion destacada>
 
-Scenario: Interfaz dinámica y amigable
-    Dado que soy un seguidor y utilizo la aplicación.
-    Cuando interactúo con la interfaz de la aplicación.
-    Entonces la interfaz debe responder de manera fluida a mis acciones, como desplazamientos y selecciones.
-    Y la interfaz debe ser fácil de navegar, con menús y botones claramente etiquetados.
-    Y se deben minimizar los tiempos de carga y la espera del usuario durante las transiciones.
-    Y la interfaz debe proporcionar retroalimentación visual y clara en respuesta a mis acciones (por ejemplo, cambios de color o animaciones).
+    Examples: datos de salida
+    | mensaje exitoso|
+    | Cancion destacada exitosamente  |
 
-Feature: US34: Conocer nuevos artistas
-Como seguidor
-quiero recibir notificación cuando hay nuevos artistas
-para conocerlos e inspirarme
+  Scenario: Reordenar mi lista de canciones
+    Given que estoy en la <pagina de reordenamiento de canciones>
+    When reordeno mi lista de canciones
+    And el sistema muestra un <mensaje exitoso>
+    Then debería ver mi lista de canciones reordenada
+    Examples: datos de salida
+    | mensaje exitoso|
+    | Canciones reordenadas exitosamente  |
 
-Scenario: Notificaciones de nuevos artistas
-    Dado que soy un seguidor y utilizo la aplicación
-    Cuando nuevos artistas se unan a la plataforma o publiquen música
-    Entonces debo recibir notificaciones en tiempo real o periódicas sobre estos nuevos artistas
-    Y las notificaciones deben incluir información relevante sobre los artistas, como su nombre, género musical o una muestra de su música
-    Y debo tener la opción de habilitar o deshabilitar estas notificaciones en la configuración de mi perfil
+  Scenario: Organizar canciones en una lista de reproducción personalizada
+    Given que estoy en la <pagina de organizacion de canciones>
+    When organizo mis canciones en una <lista de reproduccion personalizada>
+    And se organiza mediante <genero musical><artistas> 
+    And el sistema muestra un <mensaje exitoso>
+    Then debería ver mi <lista de reproduccion personalizada creada>
+    
+    Examples: datos de entrada
+    | genero musical | artistas |
+    | Rock | Led Zeppelin |
 
-Feature: US35: Filtros de categorías y géneros musicales
-Como seguidor
-quiero poder filtrar por categoría y géneros musicales a los artistas nuevos
-para que esten organizados
+    Examples: datos de salida
+    | mensaje exitoso|
+    | Listas de reproducción personalizada creada exitosamente  |
 
-Scenario: Filtrar por categoría y géneros musicales
-    Dado que soy un seguidor y utilizo la aplicación.
-    Cuando navego por la sección de nuevos artistas o artistas disponibles.
-    Entonces debo tener la capacidad de aplicar filtros por categoría y géneros musicales para explorar artistas que se ajusten a mis preferencias.
-    Y los filtros deben ser fáciles de usar y seleccionar, con opciones claras y una interfaz intuitiva.
-    Y los resultados de la búsqueda deben actualizarse automáticamente a medida que aplicas los filtros.
-    Y debo poder eliminar los filtros y volver a la vista completa de artistas en cualquier momento.
+Feature: Gestión de fans
+  Como artista 
+  quiero gestionar a mis fans 
+  para interactuar con ellos y avisarles de noticias o eventos importantes
 
-Feature: US36: Recibir notificaciones de artistas que sigo
-Como seguidor
-quiero recibir notificaciones de los artistas que sigo
-para apoyarlos
+  Scenario: Categorizar a mis fans por grupos
+    Given que estoy en la <pagina de categorizacion de fans>
+    When categorizo a mis <fans por grupos>
+    And utilizo filtros como <tiempo de interaccion><numero de likes>
+    And el sistema muestra un <mensaje exitoso>
+    Then debería ver mis <fans categorizados>
 
-Scenario: Notificaciones de artistas que sigo
-    Dado que soy un seguidor y utilizo la aplicación.
-    Cuando un artista que sigo publique nueva música o realice anuncios importantes
-    Entonces debo recibir notificaciones en tiempo real o periódicas sobre las actividades de los artistas que sigo
-    Y las notificaciones deben incluir información relevante, como el nombre del artista, el título de la nueva música o el anuncio específico
-    Y debo tener la opción de habilitar o deshabilitar estas notificaciones para cada artista que sigo en la configuración de mi perfil.
+    Examples: datos de entrada
+    | tiempo de interaccion | numero de likes |
+    | recientes             | 10              |
+    | antiguos              | 50              |
+
+    Examples: datos de salida
+    | mensaje exitoso|
+    | Fanes categorizados exitosamente  |
+
+  Scenario: Listar a mis seguidores
+    Given que estoy en la <pagina de listado de seguidores>
+    When listo a mis <seguidores>
+    And los filtro por <antiguos><recientes>
+    And el sistema muestra un <mensaje exitoso>
+    Then debería ver <mi lista de seguidores>
+    
+    Examples: datos de entrada
+    | antiguos | recientes |
+    | 10       | 50        |
+
+    Examples: datos de salida
+    | mensaje exitoso|
+    | Seguidores listados exitosamente  |    
+
+  Scenario: Editar el listado de mis seguidores
+    Given que estoy en la <pagina de edicion de seguidores>
+    When edito mi <lista de seguidores>
+    And agrego o elimino <nuevos seguidores>
+    And el sistema muestra un <mensaje exitoso>
+    Then debería ver <mi lista de seguidores actualizada>
+    
+    Examples: datos de entrada
+    | nuevos seguidores |
+    | 2                 |
+    
+    Examples: datos de salida
+    | mensaje exitoso|
+    | Se han agregado 2 seguidores al listado.  |
+    
+Feature: Gestión de eventos
+  Como manager quiero poder gestionar las actuaciones y programaciones de mi evento en la plataforma
+
+  Scenario: Crear eventos
+    Given que estoy en la <pagina de creacion de eventos>
+    When <creo un evento>
+    And <agrego detalles del evento> como <fecha><hora><lugar>
+    And el sistema muestra un <mensaje exitoso>
+    Then debería ver mi <evento creado>
+
+    Examples: datos de entrada
+    | fecha | hora | lugar |
+    | hoy   | 8 pm | casa  |
+
+    Examples: datos de salida
+    | mensaje exitoso|
+    | Evento creado exitosamente  |
+
+  Scenario: Eliminar eventos
+    Given que estoy en la <pagina de eliminacion de eventos>
+    When <elimino un evento>
+    And el sistema muestra un <mensaje de confirmacion>
+    And el sistema muestra un <mensaje exitoso>
+    Then debería ver mi <evento eliminado>
+
+    Examples: datos de entrada
+    | mensaje de confirmacion|
+    | ¿Estas seguro de eliminar este evento? |  
+
+    Examples: datos de salida
+    | mensaje exitoso|
+    | Evento eliminado exitosamente  |
+
+  Scenario: Filtrar listado de eventos
+    Given que estoy en la <pagina de listado de eventos>
+    When filtro mi <listado de eventos>
+    And busco por <palabra clave>
+    And el sistema muestra un <mensaje exitoso>
+    Then debería ver mi <listado de eventos filtrado>
+
+    Examples: datos de entrada
+    | palabra clave |
+    | futbol        |
+
+    Examples: datos de salida
+    | mensaje exitoso|
+    | Listado filtrado exitosamente  |
+
+  Scenario: Notificar las confirmaciones de los artistas
+    Given que estoy en la <pagina de notificacion de confirmaciones>
+    When notifico las <confirmaciones de los artistas>
+    Then debería ver las <confirmaciones de los artistas notificadas>
+   
+    Examples: datos de entrada
+    | confirmaciones de los artistas |
+    | confirmados                     |
+
+  Scenario: Cerrar confirmaciones cuando estén a tope
+    Given que estoy en la <pagina de cierre de confirmaciones>
+    When <cierro las confirmaciones>
+    Then debería ver las <confirmaciones cerradas>
+
+    Examples: datos de entrada
+    | cerrar las confirmaciones |
+    | cerrar confirmaciones     |
+
+Feature: Registro de managers
+  Como manager 
+  quiero estar registrado en la app 
+  para poder dar apoyo a nuevos talentos
+
+  Scenario: Registrar managers
+    Given que estoy en la <pagina de registro de managers>
+    When registro mi <informacion personal>
+    And completo mis <datos laborales><tipo de contrato><informacion de experiencia><informacion de intereses>
+    And el sistema muestra <mensaje de exito>
+    Then debería ver <mi perfil de manager>
+    
+    Examples: datos de entrada
+    | datos laborales | tipo de contrato | informacion de experiencia | informacion de intereses|
+    | manager         | contrato a tiempo completo | 5 años en el sector | pop      |
+    
+    Examples: datos de salida
+    |  mensaje de exito     |
+    | Manager creado con exito   |
+
+  Scenario: Editar información del perfil managers
+    Given que estoy en la <pagina de perfil de manager>
+    When edito mi <informacion personal> como <nombre><apellido><contrasenia><correo electronico>
+    And el sistema muestra <mensaje de exito>
+    Then debería ver mi <perfil de manager actualizado>
+
+    Examples: datos de entrada
+    | nombre        | apellido       | contrasenia          | correo electronico             |
+    | jose          | perez          | joseperez123         | joseperez123@gmail.com         |
+
+    Examples: datos de salida
+    |  mensaje de exito     |
+    | Manager actualizado con exito   |
+
+  Scenario: Eliminar perfil del manager
+    Given que estoy en la <pagina de perfil de manager>
+    When elimino <mi perfil de manager>
+    And el sistema muestra un <mensaje de confirmacion>
+    And el sistema muestra <mensaje de exito>
+    Then debería ver la <pagina de inicio>
+
+    Examples: datos de entrada
+    | mensaje de confirmacion      |
+    | ¿Estas seguro de eliminar su perfil? |
+
+    Examples: datos de salida
+    |  mensaje de exito     |
+    | cuenta eliminado con exito   |
+
+Feature: Revisión de materiales subidos
+  Como manager 
+  quiero poder revisar los materiales subidos por los nuevos artistas 
+  para observar el talento que poseen
+
+  Scenario: Recibir notificaciones del contenido de nuevos artistas
+    Given que estoy en la <pagina de notificacion de contenido>
+    When recibo notificaciones del <contenido de nuevos artistas>
+    Then debería ver las <notificaciones del contenido de nuevos artistas>
+
+  Scenario: Filtrar por categoría y género
+    Given que estoy en la <pagina de filtrado de artistas>
+    When filtro por <categoria><genero>
+    And el sistema muestra un <mensaje de exito>
+    Then debería ver los <artistas filtrados>
+    
+    Examples: datos de entrada
+    | categoria   | genero            |
+    | rock        | rock              |
+    
+    Examples: datos de salida
+    |  mensaje de exito     |
+    | Artista(s) encontrado(s) con exito   |
+    
+  Scenario: Enviar reuniones para una audición
+    Given que estoy en la <pagina de envio de reuniones>
+    When envío <reuniones para una audicion>    
+    And el sistema muestra un <mensaje de exito>
+    Then debería ver las <reuniones enviadas>
+
+    Examples: datos de entrada
+    | reuniones para una audicion       |
+    | reunión para audición de rock     |
+
+    Examples: datos de salida
+    |  mensaje de exito     |
+    | Reunion(es) enviada(s) con exito   |
+
+Feature: Visualización de datos y estadísticas
+  Como manager 
+  quiero poder vizualizar los datos y estadisticas de cada artista 
+  para una buena gestión
+
+  Scenario: Visualizar el número de reproducciones de la canción
+    Given que estoy en la <pagina de visualizacion de datos y estadisticas>
+    When visualizo el <numero de reproducciones de la cancion>
+    And el sistema muestra un <mensaje de exito>
+    Then debería ver el <numero de reproducciones de la cancion>
+
+    Examples: datos de entrada
+    | numero de reproducciones de la cancion |
+    | 10                                      |
+
+    Examples: datos de salida
+    |  mensaje de exito     |
+    | Numero de reproducciones actualizado con exito   |
+
+  Scenario: Visualizar la cantidad de seguidores y artistas
+    Given que estoy en la <pagina de visualizacion de datos y estadisticas>
+    When visualizo la <cantidad de seguidores y artistas>
+    And el sistema muestra un <mensaje de exito>
+    Then debería ver la <cantidad de seguidores y artistas>
+
+    Examples: datos de entrada
+    | cantidad de seguidores y artistas |
+    | 25                                |
+
+    Examples: datos de salida
+    |  mensaje de exito     |
+    | Cantidad de seguidores y artistas actualizada con exito   |
+
+  Scenario: Recibir alertas cuando las estadísticas bajen
+    Given que estoy en la <pagina de alertas de estadisticas>
+    When recibo <alertas> cuando las estadísticas bajen
+    And el sistema muestra un <mensaje de exito>
+    Then debería ver las <alertas de estadisticas>
+
+    Examples: datos de entrada
+    | alertas|
+    | 10     |
+    
+    Examples: datos de salida
+    |  mensaje de exito     |
+    | Alertas de estadisticas recibidas con exito   |
